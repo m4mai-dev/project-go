@@ -71,7 +71,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 
 	var storedPassword string
 	var userID int
-	var username string
+	var username string 
 	var role string
 
 	query := "SELECT id_user, username, password_hash, role FROM users WHERE email = ?"

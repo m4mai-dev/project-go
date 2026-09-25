@@ -10,22 +10,83 @@ import (
 	"belajar_go/models"
 )
 
-func CategoryHandler(w http.ResponseWriter, r *http.Request) {
+func UpdateCategory(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
-	switch r.Method {
-	case http.MethodGet:
-		id := r.URL.Query().Get("id")
-		if id != "" {
-			GetCategoryByID(w, r, id)
-			return
-		}
-		GetAllCategories(w, r)
-	case http.MethodPost:
-		CreateCategory(w, r)
-	default:
-		http.Error(w, `{"message":"Method tidak diizinkan"}`, http.StatusMethodNotAllowed)
+	// 1. Ambil ID dari URL (/api/category/5 -> "5")
+	id := strings.TrimPrefix(r.URL.Path, "/api/category/")
+
+	// 2. Baca isi Body JSON dari Thunder Client
+	var input struct {
+		Name string `json:"name"`
 	}
+	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(map[string]string{"message": "Format JSON tidak valid"})
+		return
+	}
+
+	// 3. JALANKAN QUERY SQL EXECUTE (karena config.DB adalah *sql.DB)
+	query := "UPDATE category SET category_name = ? WHERE id_category = ?"
+	_, err := config.DB.Exec(query, input.Name, id)
+
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(map[string]string{"message": "Gagal update database: " + err.Error()})
+		return
+	}
+
+	// 4. Kirim respon sukses
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]string{
+		"message": "Kategori dengan ID " + id + " berhasil diperbarui di database!",
+	})
+}
+
+func DeleteCategory(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	id := strings.TrimPrefix(r.URL.Path, "/api/category/")
+	if id == "" || id == r.URL.Path {
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(map[string]string{"message": "ID kategori wajib diisi"})
+		return
+	}
+	query := "DELETE FROM category WHERE id_category = ?"
+	result, err := config.DB.Exec(query, id)
+
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(map[string]string{"message": "Gagal menghapus data: " + err.Error()})
+		return
+	}
+	rowsAffected, _ := result.RowsAffected()
+	if rowsAffected == 0 {
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(map[string]string{"message": "Kategori tidak ditemukan"})
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]string{
+		"message": "Kategori dengan ID " + id + " berhasil dihapus!",
+	})
+}
+
+func CategoryHandler(w http.ResponseWriter, r *http.Request) {
+    switch r.Method {
+    case http.MethodGet:
+    
+    case http.MethodPost:
+   
+    case http.MethodPut:
+        
+        UpdateCategory(w, r)
+    case http.MethodDelete:
+   
+        DeleteCategory(w, r)
+    default:
+        w.WriteHeader(http.StatusMethodNotAllowed)
+        json.NewEncoder(w).Encode(map[string]string{"message": "Method tidak diizinkan"})
+    }
 }
 
 func CreateCategory(w http.ResponseWriter, r *http.Request) {
