@@ -1,0 +1,11 @@
+# import config
+packagefile belajar_go/config=C:\Users\ACER\AppData\Local\go-build\bc\bcf71240214397cc74e71b4014eddd55ad84a2ecb8f631eb81ab43f171e1632c-d
+packagefile belajar_go/models=C:\Users\ACER\AppData\Local\go-build\96\9619d40ee4e1aa58d3d403cb3baeb17ecb23721a74eaba56776c8ed193a95dad-d
+packagefile belajar_go/services=C:\Users\ACER\AppData\Local\go-build\b6\b64a5f916019540a1cd2ad4d93b84f2f1a8481691498f1e34baab253345b2639-d
+packagefile belajar_go/utils=C:\Users\ACER\AppData\Local\go-build\f1\f1cdf9c21d56e5615e1f064ab96f9b781743ad0ef373ed2e01a283adef378a0e-d
+packagefile database/sql=C:\Users\ACER\AppData\Local\go-build\3f\3fecba737d73bb33d88718a024b772c67ff56bdd6a793d20b797683aabc00924-d
+packagefile encoding/json=C:\Users\ACER\AppData\Local\go-build\57\57445316cf05c0e14550d6f499d41a20a162d9e9fc928bc798ecb8b8be22ebf2-d
+packagefile golang.org/x/crypto/bcrypt=C:\Users\ACER\AppData\Local\go-build\a0\a0bdabe6825070902e705b8b20bb0c242368252f452bda160fe001889f399871-d
+packagefile net/http=C:\Users\ACER\AppData\Local\go-build\9f\9fdf7671fc4aeac631eddd78b42011985ea5c30b59ee2de0eb274f88205e48fc-d
+packagefile strings=C:\Users\ACER\AppData\Local\go-build\9f\9f7b04b4922dd68106fd076d2cbabd3a5501f3a52cf0f4ed67ee200fe4c14497-d
+packagefile time=C:\Users\ACER\AppData\Local\go-build\91\91e1d6fa1a93b102e6adbc1336142d80c6f15f37aec335bb8f000d57cf60d526-d

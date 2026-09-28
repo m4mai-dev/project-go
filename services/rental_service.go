@@ -32,7 +32,7 @@ func CreateRental(input models.CreateRentalInput) (models.Rental, error) {
 		IDUnit:          input.IDUnit,
 		DeliveryAddress: input.DeliveryAddress,
 		StartDate:       input.StartDate,
-		ReturnDate:      input.ReturnDate,
+		ReturnDate:      input.ReturnDate, 
 		RentalFee:       input.RentalFee,
 	}
 

@@ -124,7 +124,6 @@ func UpdateItemInstance(w http.ResponseWriter, r *http.Request) {
 
 // DeleteItemInstance untuk menghapus unit item berdasarkan ID
 func DeleteItemInstance(w http.ResponseWriter, r *http.Request) {
-	// 1. Ambil ID dari URL path (misal: /item-instances/1 -> "1")
 	id := strings.TrimPrefix(r.URL.Path, "/item-instances/")
 	if id == "" || id == r.URL.Path {
 		w.WriteHeader(http.StatusBadRequest)
@@ -132,7 +131,6 @@ func DeleteItemInstance(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// 2. Eksekusi query DELETE
 	query := "DELETE FROM item_instances WHERE id = ?"
 	result, err := config.DB.Exec(query, id)
 	if err != nil {

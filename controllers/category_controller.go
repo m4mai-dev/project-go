@@ -12,11 +12,8 @@ import (
 
 func UpdateCategory(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-
-	// 1. Ambil ID dari URL (/api/category/5 -> "5")
 	id := strings.TrimPrefix(r.URL.Path, "/api/category/")
 
-	// 2. Baca isi Body JSON dari Thunder Client
 	var input struct {
 		Name string `json:"name"`
 	}
@@ -26,7 +23,6 @@ func UpdateCategory(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// 3. JALANKAN QUERY SQL EXECUTE (karena config.DB adalah *sql.DB)
 	query := "UPDATE category SET category_name = ? WHERE id_category = ?"
 	_, err := config.DB.Exec(query, input.Name, id)
 
@@ -36,7 +32,6 @@ func UpdateCategory(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// 4. Kirim respon sukses
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(map[string]string{
 		"message": "Kategori dengan ID " + id + " berhasil diperbarui di database!",
@@ -72,21 +67,21 @@ func DeleteCategory(w http.ResponseWriter, r *http.Request) {
 }
 
 func CategoryHandler(w http.ResponseWriter, r *http.Request) {
-    switch r.Method {
-    case http.MethodGet:
-    
-    case http.MethodPost:
-   
-    case http.MethodPut:
-        
-        UpdateCategory(w, r)
-    case http.MethodDelete:
-   
-        DeleteCategory(w, r)
-    default:
-        w.WriteHeader(http.StatusMethodNotAllowed)
-        json.NewEncoder(w).Encode(map[string]string{"message": "Method tidak diizinkan"})
-    }
+	switch r.Method {
+	case http.MethodGet:
+
+	case http.MethodPost:
+
+	case http.MethodPut:
+
+		UpdateCategory(w, r)
+	case http.MethodDelete:
+
+		DeleteCategory(w, r)
+	default:
+		w.WriteHeader(http.StatusMethodNotAllowed)
+		json.NewEncoder(w).Encode(map[string]string{"message": "Method tidak diizinkan"})
+	}
 }
 
 func CreateCategory(w http.ResponseWriter, r *http.Request) {
