@@ -1,0 +1,4 @@
+# import config
+packagefile belajar_go/controllers=C:\Users\ACER\AppData\Local\go-build\a8\a814b663c6babc563151cd25af5cf27479d6f5a880d192924d22ebc4a8136adf-d
+packagefile belajar_go/middlewares=C:\Users\ACER\AppData\Local\go-build\be\be31b273911d5f6dffb18556b313dc521d3dfb343e45904c41298ec15a49348d-d
+packagefile net/http=C:\Users\ACER\AppData\Local\go-build\9f\9fdf7671fc4aeac631eddd78b42011985ea5c30b59ee2de0eb274f88205e48fc-d

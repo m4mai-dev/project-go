@@ -1,0 +1,6 @@
+# import config
+packagefile belajar_go/config=C:\Users\ACER\AppData\Local\go-build\bc\bcf71240214397cc74e71b4014eddd55ad84a2ecb8f631eb81ab43f171e1632c-d
+packagefile belajar_go/routes=D:\belajar_go\tmp\go-build622498081\b178\_pkg_.a
+packagefile fmt=C:\Users\ACER\AppData\Local\go-build\1c\1c11d5782fa5fb7bdac6c210a900315b96d2c0ceeb8be03fb023babb6f3b209a-d
+packagefile net/http=C:\Users\ACER\AppData\Local\go-build\9f\9fdf7671fc4aeac631eddd78b42011985ea5c30b59ee2de0eb274f88205e48fc-d
+packagefile runtime=C:\Users\ACER\AppData\Local\go-build\a5\a5732d7241053a45da9037e0a2dd5914cf8f435a7f389fc8cdb15c3a3958a82c-d

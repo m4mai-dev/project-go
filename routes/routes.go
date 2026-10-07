@@ -9,6 +9,10 @@ import (
 func SetupRoutes() http.Handler {
 	mux := http.NewServeMux()
 
+	// Serve folder uploads beserta seluruh sub-foldernya (termasuk products)
+	fs := http.FileServer(http.Dir("./uploads"))
+	mux.Handle("/uploads/", http.StripPrefix("/uploads/", fs))
+
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Path != "/" {
 			http.NotFound(w, r)
