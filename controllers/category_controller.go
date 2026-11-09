@@ -10,146 +10,213 @@ import (
 	"belajar_go/models"
 )
 
-func UpdateCategory(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	id := strings.TrimPrefix(r.URL.Path, "/api/category/")
-
-	var input struct {
-		Name string `json:"name"`
+// Helper untuk mengekstrak ID dari URL path (mendukung /category/{id} dan /api/category/{id})
+func extractCategoryID(path string) string {
+	trimmed := strings.Trim(path, "/")
+	parts := strings.Split(trimmed, "/")
+	if len(parts) == 0 {
+		return ""
 	}
-	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(map[string]string{"message": "Format JSON tidak valid"})
-		return
+	last := parts[len(parts)-1]
+	// Jika bagian terakhir adalah nama endpoint ('category'), berarti tidak ada ID
+	if last == "category" {
+		return ""
 	}
-
-	query := "UPDATE category SET category_name = ? WHERE id_category = ?"
-	_, err := config.DB.Exec(query, input.Name, id)
-
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(map[string]string{"message": "Gagal update database: " + err.Error()})
-		return
-	}
-
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(map[string]string{
-		"message": "Kategori dengan ID " + id + " berhasil diperbarui di database!",
-	})
+	return last
 }
 
-func DeleteCategory(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	id := strings.TrimPrefix(r.URL.Path, "/api/category/")
-	if id == "" || id == r.URL.Path {
-		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(map[string]string{"message": "ID kategori wajib diisi"})
-		return
-	}
-	query := "DELETE FROM category WHERE id_category = ?"
-	result, err := config.DB.Exec(query, id)
-
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(map[string]string{"message": "Gagal menghapus data: " + err.Error()})
-		return
-	}
-	rowsAffected, _ := result.RowsAffected()
-	if rowsAffected == 0 {
-		w.WriteHeader(http.StatusNotFound)
-		json.NewEncoder(w).Encode(map[string]string{"message": "Kategori tidak ditemukan"})
-		return
-	}
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(map[string]string{
-		"message": "Kategori dengan ID " + id + " berhasil dihapus!",
-	})
-}
-
+// CategoryHandler menangani seluruh metode HTTP untuk /category dan /api/category/
 func CategoryHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	id := extractCategoryID(r.URL.Path)
+
 	switch r.Method {
 	case http.MethodGet:
-
+		if id != "" {
+			GetCategoryByID(w, r, id)
+		} else {
+			GetAllCategories(w, r)
+		}
 	case http.MethodPost:
-
+		CreateCategory(w, r)
 	case http.MethodPut:
-
-		UpdateCategory(w, r)
+		if id == "" {
+			w.WriteHeader(http.StatusBadRequest)
+			json.NewEncoder(w).Encode(map[string]string{"message": "ID kategori wajib diisi pada URL path"})
+			return
+		}
+		UpdateCategory(w, r, id)
 	case http.MethodDelete:
-
-		DeleteCategory(w, r)
+		if id == "" {
+			w.WriteHeader(http.StatusBadRequest)
+			json.NewEncoder(w).Encode(map[string]string{"message": "ID kategori wajib diisi pada URL path"})
+			return
+		}
+		DeleteCategory(w, r, id)
 	default:
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		json.NewEncoder(w).Encode(map[string]string{"message": "Method tidak diizinkan"})
 	}
 }
 
-func CreateCategory(w http.ResponseWriter, r *http.Request) {
-	var category models.Category
-	err := json.NewDecoder(r.Body).Decode(&category)
-	if err != nil {
-		http.Error(w, `{"message":"Format JSON tidak valid"}`, http.StatusBadRequest)
-		return
-	}
-	if strings.TrimSpace(category.Name) == "" {
-		http.Error(w, `{"message":"Nama kategori tidak boleh kosong"}`, http.StatusBadRequest)
-		return
-	}
-
-	query := "INSERT INTO categories (name) VALUES (?)"
-	result, err := config.DB.Exec(query, category.Name)
-	if err != nil {
-		http.Error(w, `{"message":"Gagal menyimpan data ke database: `+err.Error()+`"}`, http.StatusInternalServerError)
-		return
-	}
-
-	lastInsertID, _ := result.LastInsertId()
-	category.ID = uint(lastInsertID)
-
-	w.WriteHeader(http.StatusCreated)
-	json.NewEncoder(w).Encode(category)
-}
-
+// GetAllCategories mengambil semua data kategori dari tabel `category`
 func GetAllCategories(w http.ResponseWriter, r *http.Request) {
-	rows, err := config.DB.Query("SELECT id, name FROM categories")
+	query := "SELECT id_category, category_name FROM category ORDER BY id_category ASC"
+	rows, err := config.DB.Query(query)
 	if err != nil {
-		http.Error(w, `{"message":"Gagal mengambil data kategori: `+err.Error()+`"}`, http.StatusInternalServerError)
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(map[string]string{"message": "Gagal mengambil data kategori: " + err.Error()})
 		return
 	}
 	defer rows.Close()
 
 	categories := make([]models.Category, 0)
-
 	for rows.Next() {
 		var cat models.Category
 		if err := rows.Scan(&cat.ID, &cat.Name); err != nil {
-			http.Error(w, `{"message":"Gagal membaca data"}`, http.StatusInternalServerError)
+			w.WriteHeader(http.StatusInternalServerError)
+			json.NewEncoder(w).Encode(map[string]string{"message": "Gagal membaca data kategori: " + err.Error()})
 			return
 		}
 		categories = append(categories, cat)
 	}
-	if err := rows.Err(); err != nil {
-		http.Error(w, `{"message":"Error saat iterasi data: `+err.Error()+`"}`, http.StatusInternalServerError)
-		return
-	}
 
-	json.NewEncoder(w).Encode(categories)
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"message": "Berhasil mengambil data kategori",
+		"data":    categories,
+	})
 }
 
+// GetCategoryByID mengambil 1 kategori berdasarkan id_category
 func GetCategoryByID(w http.ResponseWriter, r *http.Request, id string) {
 	var category models.Category
-
-	query := "SELECT id, name FROM categories WHERE id = ?"
+	query := "SELECT id_category, category_name FROM category WHERE id_category = ?"
 	err := config.DB.QueryRow(query, id).Scan(&category.ID, &category.Name)
 
 	if err != nil {
 		if err == sql.ErrNoRows {
-			http.Error(w, `{"message":"Kategori tidak ditemukan"}`, http.StatusNotFound)
+			w.WriteHeader(http.StatusNotFound)
+			json.NewEncoder(w).Encode(map[string]string{"message": "Kategori tidak ditemukan"})
 			return
 		}
-		http.Error(w, `{"message":"Gagal mengambil data kategori: `+err.Error()+`"}`, http.StatusInternalServerError)
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(map[string]string{"message": "Gagal mengambil data kategori: " + err.Error()})
 		return
 	}
 
-	json.NewEncoder(w).Encode(category)
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"message": "Berhasil mengambil data kategori",
+		"data":    category,
+	})
+}
+
+// CreateCategory menambahkan kategori baru ke tabel `category`
+func CreateCategory(w http.ResponseWriter, r *http.Request) {
+	var input models.CategoryInput
+	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(map[string]string{"message": "Format JSON tidak valid"})
+		return
+	}
+
+	categoryName := strings.TrimSpace(input.Value())
+	if categoryName == "" {
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(map[string]string{"message": "Nama kategori tidak boleh kosong (field 'category_name' atau 'name')"})
+		return
+	}
+
+	query := "INSERT INTO category (category_name) VALUES (?)"
+	result, err := config.DB.Exec(query, categoryName)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(map[string]string{"message": "Gagal menyimpan data kategori: " + err.Error()})
+		return
+	}
+
+	lastInsertID, _ := result.LastInsertId()
+	category := models.Category{
+		ID:   uint(lastInsertID),
+		Name: categoryName,
+	}
+
+	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"message": "Kategori berhasil ditambahkan!",
+		"data":    category,
+	})
+}
+
+// UpdateCategory memperbarui nama kategori berdasarkan id_category
+func UpdateCategory(w http.ResponseWriter, r *http.Request, id string) {
+	var input models.CategoryInput
+	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(map[string]string{"message": "Format JSON tidak valid"})
+		return
+	}
+
+	categoryName := strings.TrimSpace(input.Value())
+	if categoryName == "" {
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(map[string]string{"message": "Nama kategori tidak boleh kosong"})
+		return
+	}
+
+	query := "UPDATE category SET category_name = ? WHERE id_category = ?"
+	result, err := config.DB.Exec(query, categoryName, id)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(map[string]string{"message": "Gagal memperbarui database: " + err.Error()})
+		return
+	}
+
+	rowsAffected, _ := result.RowsAffected()
+	if rowsAffected == 0 {
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(map[string]string{"message": "Kategori dengan ID " + id + " tidak ditemukan"})
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"message": "Kategori dengan ID " + id + " berhasil diperbarui!",
+		"data": models.Category{
+			ID:   uint(rowsAffected),
+			Name: categoryName,
+		},
+	})
+}
+
+// DeleteCategory menghapus kategori berdasarkan id_category
+func DeleteCategory(w http.ResponseWriter, r *http.Request, id string) {
+	query := "DELETE FROM category WHERE id_category = ?"
+	result, err := config.DB.Exec(query, id)
+	if err != nil {
+		// Menangani Foreign Key Constraint jika ada produk yang masih terkait
+		if strings.Contains(strings.ToLower(err.Error()), "foreign key") || strings.Contains(strings.ToLower(err.Error()), "constraint") {
+			w.WriteHeader(http.StatusConflict)
+			json.NewEncoder(w).Encode(map[string]string{
+				"message": "Gagal menghapus kategori: masih terdapat produk yang terhubung dengan kategori ini. Hapus atau pindahkan produk terkait terlebih dahulu.",
+			})
+			return
+		}
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(map[string]string{"message": "Gagal menghapus data: " + err.Error()})
+		return
+	}
+
+	rowsAffected, _ := result.RowsAffected()
+	if rowsAffected == 0 {
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(map[string]string{"message": "Kategori tidak ditemukan"})
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]string{
+		"message": "Kategori dengan ID " + id + " berhasil dihapus!",
+	})
 }

@@ -16,7 +16,7 @@ func RentalHandler(w http.ResponseWriter, r *http.Request) {
 	case http.MethodGet:
 		GetRentals(w, r)
 	case http.MethodPost:
-		CreateRental(w, r)
+		CreateRental(w, r) 
 	case http.MethodPut:
 		UpdateRental(w, r)
 	default:

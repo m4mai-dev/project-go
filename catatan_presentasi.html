@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panduan & Catatan Presentasi - Sistem Rental Barang Golang API</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    code, pre { font-family: 'JetBrains Mono', monospace; }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen antialiased selection:bg-indigo-500 selection:text-white">
+
+  <!-- Header Banner -->
+  <header class="border-b border-slate-800 bg-slate-900/60 backdrop-blur-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+            🎤 Deck Presentasi & Cheatsheet
+          </span>
+          <span class="text-xs text-slate-400">Siap Pakai untuk Sidang / Demo Penguji</span>
+        </div>
+        <h1 class="text-xl sm:text-2xl font-bold text-white tracking-tight mt-1">
+          Catatan & Alur Bicara Presentasi (Presenter Cheatsheet)
+        </h1>
+        <p class="text-xs sm:text-sm text-slate-400">Sistem Backend REST API Rental Barang (Golang + MySQL)</p>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <a href="audit.html" class="inline-flex items-center px-4 py-2 text-xs font-semibold text-slate-200 bg-slate-800 hover:bg-slate-700 rounded-lg border border-slate-700 transition">
+          &larr; Lihat Laporan Audit Teknis
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
+
+    <!-- Slide 1: Pembukaan & Latar Belakang -->
+    <article class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm space-y-4 relative overflow-hidden">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div class="flex items-center gap-2">
+          <span class="flex h-7 w-7 items-center justify-center rounded-full bg-indigo-500 text-xs font-bold text-white">1</span>
+          <h2 class="text-lg font-bold text-white">Pembukaan & Problem Statement (Latar Belakang)</h2>
+        </div>
+        <span class="text-xs text-slate-400">Durasi: ~2 Menit</span>
+      </div>
+
+      <div class="bg-indigo-950/40 border border-indigo-500/30 rounded-xl p-4">
+        <div class="text-xs font-semibold uppercase tracking-wider text-indigo-400 mb-2">🗣️ Script Bicara Anda:</div>
+        <p class="text-sm text-slate-200 italic leading-relaxed">
+          "Selamat pagi/siang Bapak/Ibu penguji. Hari ini saya mempresentasikan proyek backend service: <strong>Sistem Rental Barang Berbasis RESTful API menggunakan Golang</strong>.<br><br>
+          Pada bisnis rental barang (seperti alat kamera, audio podcast, maupun perlengkapan kantor), tantangannya berbeda dengan e-commerce biasa. Sistem tidak hanya mencatat kuantitas stok, tetapi harus mampu <strong>melacak identitas setiap unit fisik secara presisi melalui nomor seri aset</strong>, menghitung durasi sewa, mengelola status ketersediaan, mendeteksi denda keterlambatan pengembalian, serta mencatat verifikasi bukti pembayaran."
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-slate-300">
+        <div class="bg-slate-950 p-3.5 rounded-lg border border-slate-800">
+          <span class="font-bold text-white">💡 Poin Tekanan:</span> Jangan sebut ini sekadar toko online. Tekankan konsep <em>"Asset Unit Tracking"</em> & <em>"Rental Lifecycle"</em>.
+        </div>
+        <div class="bg-slate-950 p-3.5 rounded-lg border border-slate-800">
+          <span class="font-bold text-white">🎯 Solusi:</span> REST API modular dengan integritas transaksi ACID pada MySQL dan autentikasi token JWT.
+        </div>
+      </div>
+    </article>
+
+    <!-- Slide 2: Arsitektur & Teknologi -->
+    <article class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div class="flex items-center gap-2">
+          <span class="flex h-7 w-7 items-center justify-center rounded-full bg-indigo-500 text-xs font-bold text-white">2</span>
+          <h2 class="text-lg font-bold text-white">Arsitektur & Pilihan Teknologi (Tech Stack)</h2>
+        </div>
+        <span class="text-xs text-slate-400">Durasi: ~3 Menit</span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
+          <div class="text-xs font-bold text-indigo-400 uppercase">1. Golang (Go)</div>
+          <div class="text-sm font-semibold text-white">net/http Standard Library</div>
+          <p class="text-xs text-slate-400">
+            Kompilasi native biner tunggal tanpa dependency runtime berat, efisiensi memori luar biasa, serta model concurrency goroutines.
+          </p>
+        </div>
+
+        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
+          <div class="text-xs font-bold text-emerald-400 uppercase">2. MySQL & Engine InnoDB</div>
+          <div class="text-sm font-semibold text-white">Relational & ACID Compliant</div>
+          <p class="text-xs text-slate-400">
+            Menjamin transaksi perbankan & booking tidak korup menggunakan <code>BEGIN</code>, <code>COMMIT</code>, dan <code>ROLLBACK</code>.
+          </p>
+        </div>
+
+        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
+          <div class="text-xs font-bold text-amber-400 uppercase">3. JWT & Bcrypt</div>
+          <div class="text-sm font-semibold text-white">Stateless Security</div>
+          <p class="text-xs text-slate-400">
+            Autentikasi stateless hemat bandwidth dengan masa berlaku token 24 jam, serta hashing password menggunakan salt acak.
+          </p>
+        </div>
+      </div>
+
+      <div class="bg-indigo-950/40 border border-indigo-500/30 rounded-xl p-4">
+        <div class="text-xs font-semibold uppercase tracking-wider text-indigo-400 mb-1">🗣️ Script Bicara:</div>
+        <p class="text-xs sm:text-sm text-slate-200 italic">
+          "Kami sengaja memilih pustaka standar <code>net/http</code> bawaan Go untuk membuktikan pemahaman fundamental backend yang kokoh tanpa bergantung secara berlebihan pada framework pihak ketiga."
+        </p>
+      </div>
+    </article>
+
+    <!-- Slide 3: Penjelasan ERD & Desain Database -->
+    <article class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div class="flex items-center gap-2">
+          <span class="flex h-7 w-7 items-center justify-center rounded-full bg-indigo-500 text-xs font-bold text-white">3</span>
+          <h2 class="text-lg font-bold text-white">Desain Basis Data (ERD Normalization)</h2>
+        </div>
+        <span class="text-xs text-slate-400">Durasi: ~3 Menit</span>
+      </div>
+
+      <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 overflow-x-auto text-xs text-slate-300 font-mono leading-relaxed">
+        category (1) &rarr; (N) products (1) &rarr; (N) item_instances (1) &rarr; (N) rentals (1) &rarr; (N) payments
+                                                                             &uarr;
+                                                                       (N) &larr; (1) user
+      </div>
+
+      <div class="bg-amber-950/40 border border-amber-500/30 rounded-xl p-4 space-y-2">
+        <div class="flex items-center gap-2 text-xs font-bold text-amber-400">
+          <span>⚡</span> SENJATA RAHASIA JAWABAN DOSEN: "Kenapa memisahkan Products dan Item Instances?"
+        </div>
+        <p class="text-xs sm:text-sm text-slate-200 leading-relaxed">
+          <strong>Jawaban Anda:</strong> "Jika kita hanya menyimpan kuantitas stok angka di tabel produk, kita tidak bisa mengetahui secara spesifik unit fisik bernomor seri berapa yang sedang dibawa pelanggan A, unit mana yang sedang diservis teknisi, dan unit mana yang kondisinya prima. Dengan tabel <code>item_instances</code>, setiap unit fisik memiliki identitas unik (<code>asset_code</code>) dan riwayat siklus hidup tersendiri."
+        </p>
+      </div>
+    </article>
+
+    <!-- Slide 4: Use Case & Flow Skenario -->
+    <article class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div class="flex items-center gap-2">
+          <span class="flex h-7 w-7 items-center justify-center rounded-full bg-indigo-500 text-xs font-bold text-white">4</span>
+          <h2 class="text-lg font-bold text-white">Alur Bisnis & Use Case Diagram</h2>
+        </div>
+        <span class="text-xs text-slate-400">Durasi: ~3 Menit</span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-3">
+          <div class="font-bold text-indigo-400 uppercase text-sm">Flow Pengguna (Customer)</div>
+          <ol class="list-decimal list-inside space-y-1.5 text-slate-300">
+            <li>Registrasi & Login sistem untuk memperoleh token JWT.</li>
+            <li>Eksplorasi katalog produk & melihat ketersediaan unit.</li>
+            <li>Menentukan durasi sewa (tanggal mulai s/d tanggal kembali).</li>
+            <li>Submit order rental barang & alamat pengiriman.</li>
+            <li>Melakukan pembayaran & mengunggah bukti transfer.</li>
+            <li>Mengembalikan barang setelah masa sewa selesai.</li>
+          </ol>
+        </div>
+
+        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-3">
+          <div class="font-bold text-emerald-400 uppercase text-sm">Flow Pengelola (Admin)</div>
+          <ol class="list-decimal list-inside space-y-1.5 text-slate-300">
+            <li>Login sebagai administrator.</li>
+            <li>CRUD data kategori, produk, dan unit fisik barang.</li>
+            <li>Melihat daftar pesanan rental yang baru masuk.</li>
+            <li>Memvalidasi bukti pembayaran dan menyetujui pesanan.</li>
+            <li>Memvalidasi pengembalian barang & kalkulasi denda jika terlambat.</li>
+            <li>Melihat rekapitulasi penjualan & performa sewa.</li>
+          </ol>
+        </div>
+      </div>
+    </article>
+
+    <!-- Slide 5: Live Demo Cheat Sheet -->
+    <article class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div class="flex items-center gap-2">
+          <span class="flex h-7 w-7 items-center justify-center rounded-full bg-emerald-500 text-xs font-bold text-white">5</span>
+          <h2 class="text-lg font-bold text-white">Panduan Skenario Live Demo (Postman / cURL)</h2>
+        </div>
+        <span class="text-xs text-slate-400">Durasi: ~4 Menit</span>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <div class="p-3.5 bg-slate-950 rounded-xl border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div>
+            <span class="text-emerald-400 font-bold">1. Demo Auth:</span>
+            <code class="text-slate-300 ml-1">POST /register</code> &rarr; <code class="text-slate-300">POST /login</code>
+          </div>
+          <span class="text-slate-400">Tunjukkan token JWT yang berhasil digenerate</span>
+        </div>
+
+        <div class="p-3.5 bg-slate-950 rounded-xl border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div>
+            <span class="text-indigo-400 font-bold">2. Demo Master Data:</span>
+            <code class="text-slate-300 ml-1">GET /products/</code> & <code class="text-slate-300">GET /item-instances</code>
+          </div>
+          <span class="text-slate-400">Tunjukkan unit fisik dengan nomor aset dan status available</span>
+        </div>
+
+        <div class="p-3.5 bg-slate-950 rounded-xl border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div>
+            <span class="text-amber-400 font-bold">3. Demo Transaksi Rental:</span>
+            <code class="text-slate-300 ml-1">POST /rental</code>
+          </div>
+          <span class="text-slate-400">Tunjukkan status unit fisik otomatis berubah menjadi <strong>rented</strong></span>
+        </div>
+
+        <div class="p-3.5 bg-slate-950 rounded-xl border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div>
+            <span class="text-rose-400 font-bold">4. Demo Pembayaran:</span>
+            <code class="text-slate-300 ml-1">POST /payments</code>
+          </div>
+          <span class="text-slate-400">Tunjukkan pencatatan bukti bayar dengan relasi ke id_rentals</span>
+        </div>
+
+        <div class="p-3.5 bg-slate-950 rounded-xl border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div>
+            <span class="text-emerald-400 font-bold">5. Demo Pengembalian:</span>
+            <code class="text-slate-300 ml-1">PUT /rental/{id}</code>
+          </div>
+          <span class="text-slate-400">Tunjukkan pencatatan tanggal kembali aktual, denda, dan unit kembali available</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- Slide 6: Tanya Jawab Dosen (Q&A Cheatsheet) -->
+    <article class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div class="flex items-center gap-2">
+          <span class="flex h-7 w-7 items-center justify-center rounded-full bg-indigo-500 text-xs font-bold text-white">6</span>
+          <h2 class="text-lg font-bold text-white">Kisi-Kisi Pertanyaan Kritis Penguji & Jawaban Taktis</h2>
+        </div>
+        <span class="text-xs text-slate-400">Anti-Gugup Cheatsheet</span>
+      </div>
+
+      <div class="space-y-4 text-xs sm:text-sm">
+        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
+          <div class="font-bold text-rose-400">T: "Bagaimana cara Anda mencegah terjadinya penyewaan ganda (double-booking)?"</div>
+          <p class="text-slate-300 leading-relaxed text-xs">
+            <strong>J:</strong> "Kami menerapkan pengecekan status unit langsung pada level query transaksi basis data. Ketika pesanan baru diproses, sistem memastikan status unit di tabel <code>item_instances</code> adalah <code>available</code>, dan secara atomik mengupdatenya menjadi <code>rented</code> dalam satu transaksi."
+          </p>
+        </div>
+
+        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
+          <div class="font-bold text-rose-400">T: "Kenapa memilih arsitektur REST API ketimbang Monolith dengan HTML template server-side?"</div>
+          <p class="text-slate-300 leading-relaxed text-xs">
+            <strong>J:</strong> "Dengan arsitektur REST API murni, backend menjadi <em>client-agnostic</em> (tidak terikat antarmuka tertentu). Endpoint yang sama dapat dikonsumsi oleh aplikasi Web modern (React/Next.js), Mobile App (Flutter/Android), hingga mesin kasir POS internal tanpa perlu merombak ulang logic backend."
+          </p>
+        </div>
+
+        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
+          <div class="font-bold text-rose-400">T: "Apa fungsi Transaction (Begin, Commit, Rollback) pada fungsi hapus produk?"</div>
+          <p class="text-slate-300 leading-relaxed text-xs">
+            <strong>J:</strong> "Untuk menjamin integritas data (ACID). Saat menghapus produk, unit-unit fisik anak di <code>item_instances</code> juga harus ikut dihapus. Jika terjadi kegagalan sistem saat menghapus produk setelah unit terhapus, maka perintah <code>tx.Rollback()</code> akan membatalkan seluruh perubahan agar database tidak meninggalkan data sampah atau data cacat."
+          </p>
+        </div>
+      </div>
+    </article>
+
+    <!-- Slide 7: Penutup -->
+    <article class="bg-gradient-to-r from-indigo-900/60 to-purple-900/60 border border-indigo-500/30 rounded-2xl p-6 sm:p-8 text-center space-y-3">
+      <h2 class="text-xl font-bold text-white">Penutup Presentasi (Closing Statement)</h2>
+      <p class="text-xs sm:text-sm text-slate-200 max-w-2xl mx-auto italic">
+        "Demikian presentasi dari saya mengenai Sistem Backend REST API Rental Barang. Sistem ini telah berhasil memodelkan siklus bisnis sewa barang secara komprehensif mulai dari pelacakan aset unit fisik, transaksi rental, manajemen denda, hingga verifikasi pembayaran. Terima kasih atas perhatian Bapak/Ibu penguji, saya siap menerima pertanyaan maupun masukan."
+      </p>
+    </article>
+
+  </main>
+
+  <footer class="border-t border-slate-800 py-6 mt-12 text-center text-xs text-slate-500">
+    Panduan Presentasi Resmi &bull; Sistem Rental Barang REST API (Golang) &bull; 2026
+  </footer>
+</body>
+</html>
+

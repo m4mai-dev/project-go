@@ -13,3 +13,7 @@ main
 # Folder atau file biner bawaan Go
 bin/
 pkg/
+
+# Temporary build artifacts
+tmp/
+go-build*/

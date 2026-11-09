@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Laporan Audit Teknis - Sistem Rental Barang Golang API</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    code, pre { font-family: 'JetBrains Mono', monospace; }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen antialiased selection:bg-indigo-500 selection:text-white">
+
+  <!-- Header Banner -->
+  <header class="border-b border-slate-800 bg-slate-900/60 backdrop-blur-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+            Audit v1.0
+          </span>
+          <span class="text-xs text-slate-400">Terakhir Diperbarui: 09 November 2026</span>
+        </div>
+        <h1 class="text-xl sm:text-2xl font-bold text-white tracking-tight mt-1">
+          Laporan Audit Teknis & Progres Pengembangan
+        </h1>
+        <p class="text-xs sm:text-sm text-slate-400">Backend Service REST API Rental Barang (Golang + MySQL)</p>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <a href="catatan_presentasi.html" class="inline-flex items-center px-4 py-2 text-xs font-semibold text-slate-200 bg-slate-800 hover:bg-slate-700 rounded-lg border border-slate-700 transition">
+          Lihat Catatan Presentasi &rarr;
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+    <!-- KPI / Summary Cards -->
+    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-sm">
+        <div class="text-slate-400 text-xs font-medium uppercase tracking-wider">Tingkat Penyelesaian</div>
+        <div class="text-3xl font-extrabold text-white mt-2 flex items-baseline gap-2">
+          <span>70%</span>
+          <span class="text-xs font-semibold text-emerald-400">Tahap Stabilisasi</span>
+        </div>
+        <div class="w-full bg-slate-800 rounded-full h-2 mt-3 overflow-hidden">
+          <div class="bg-indigo-500 h-2 rounded-full" style="width: 70%"></div>
+        </div>
+      </div>
+
+      <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-sm">
+        <div class="text-slate-400 text-xs font-medium uppercase tracking-wider">Modul Selesai / Terimplementasi</div>
+        <div class="text-3xl font-extrabold text-emerald-400 mt-2">6 / 8</div>
+        <p class="text-xs text-slate-400 mt-2">Auth, User, Product, Instance, Rental, Payment</p>
+      </div>
+
+      <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-sm">
+        <div class="text-slate-400 text-xs font-medium uppercase tracking-wider">Bug & Temuan Terdeteksi</div>
+        <div class="text-3xl font-extrabold text-rose-400 mt-2">5 Bug</div>
+        <p class="text-xs text-slate-400 mt-2">2 Kritis (Skema Kategori & Unit State Sync)</p>
+      </div>
+
+      <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-sm">
+        <div class="text-slate-400 text-xs font-medium uppercase tracking-wider">Fitur Belum Dibuat</div>
+        <div class="text-3xl font-extrabold text-amber-400 mt-2">2 Fitur</div>
+        <p class="text-xs text-slate-400 mt-2">Rekap Penjualan Admin & Auto Kalkulasi Denda</p>
+      </div>
+    </section>
+
+    <!-- Audit Matrix Table -->
+    <section class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-sm">
+      <div class="px-6 py-4 border-b border-slate-800 flex items-center justify-between">
+        <h2 class="text-base font-semibold text-white flex items-center gap-2">
+          <span>📋</span> Matriks Progres Fitur & Tingkat Kesiapan
+        </h2>
+        <span class="text-xs text-slate-400">Status real-time dari kode sumber</span>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm">
+          <thead class="bg-slate-950/60 text-slate-400 text-xs uppercase tracking-wider border-b border-slate-800">
+            <tr>
+              <th class="px-6 py-3.5">Modul / Fitur</th>
+              <th class="px-6 py-3.5">Pekerjaan Selesai</th>
+              <th class="px-6 py-3.5">Pekerjaan Tertunda (To-Do)</th>
+              <th class="px-6 py-3.5">Status & Urgensi</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-800">
+            <tr class="hover:bg-slate-800/40 transition">
+              <td class="px-6 py-4 font-semibold text-white">1. Auth & User Management</td>
+              <td class="px-6 py-4 text-slate-300">
+                <span class="text-emerald-400 font-medium">✓</span> Register akun, hashing kata sandi (bcrypt), Login verifikasi password, generate JWT token 24 jam, CRUD pengguna lengkap.
+              </td>
+              <td class="px-6 py-4 text-slate-400">
+                Middleware verifikasi Role (RBAC) agar admin dan customer memiliki proteksi terpisah.
+              </td>
+              <td class="px-6 py-4">
+                <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                  85% Siap
+                </span>
+              </td>
+            </tr>
+
+            <tr class="hover:bg-slate-800/40 transition bg-emerald-950/10">
+              <td class="px-6 py-4 font-semibold text-white">2. Kategori Produk</td>
+              <td class="px-6 py-4 text-slate-300">
+                <span class="text-emerald-400 font-medium">✓</span> CRUD Kategori Lengkap (GetAll, GetByID, Create, Update, Delete) dengan penanganan Foreign Key constraint dan fleksibilitas input JSON.
+              </td>
+              <td class="px-6 py-4 text-emerald-400 font-medium">
+                Selesai 100% & Teruji
+              </td>
+              <td class="px-6 py-4">
+                <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                  🟢 100% Selesai
+                </span>
+              </td>
+            </tr>
+
+            <tr class="hover:bg-slate-800/40 transition">
+              <td class="px-6 py-4 font-semibold text-white">3. Master Produk</td>
+              <td class="px-6 py-4 text-slate-300">
+                <span class="text-emerald-400 font-medium">✓</span> Tambah produk, list semua produk, update produk, hapus produk dengan database transaction (ACID).
+              </td>
+              <td class="px-6 py-4 text-slate-400">
+                Buka akses GET produk untuk publik tanpa token, pencarian / filter kategori.
+              </td>
+              <td class="px-6 py-4">
+                <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                  80% Siap
+                </span>
+              </td>
+            </tr>
+
+            <tr class="hover:bg-slate-800/40 transition">
+              <td class="px-6 py-4 font-semibold text-white">4. Unit Fisik (Item Instances)</td>
+              <td class="px-6 py-4 text-slate-300">
+                <span class="text-emerald-400 font-medium">✓</span> CRUD unit fisik, tracking status fisik unit (`available`, `rented`, `maintenance`).
+              </td>
+              <td class="px-6 py-4 text-slate-400">
+                Sinkronisasi nama kolom PK (`id_unit`) dan FK (`id_produk`) sesuai ERD.
+              </td>
+              <td class="px-6 py-4">
+                <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                  85% Siap
+                </span>
+              </td>
+            </tr>
+
+            <tr class="hover:bg-slate-800/40 transition">
+              <td class="px-6 py-4 font-semibold text-white">5. Transaksi Rental</td>
+              <td class="px-6 py-4 text-slate-300">
+                <span class="text-emerald-400 font-medium">✓</span> Pembuatan transaksi rental, pengubahan status unit otomatis menjadi `rented`, list transaksi.
+              </td>
+              <td class="px-6 py-4 text-slate-400">
+                Validasi ketersediaan unit sebelum sewa (*double-booking prevention*), pengembalian otomatis status unit ke `available` saat barang dikembalikan.
+              </td>
+              <td class="px-6 py-4">
+                <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold bg-rose-500/10 text-rose-400 border border-rose-500/20">
+                  🔴 Perlu Validasi
+                </span>
+              </td>
+            </tr>
+
+            <tr class="hover:bg-slate-800/40 transition">
+              <td class="px-6 py-4 font-semibold text-white">6. Pengembalian & Denda</td>
+              <td class="px-6 py-4 text-slate-300">
+                <span class="text-emerald-400 font-medium">✓</span> Field `actual_return_date` dan `late_fee` di tabel `rentals`.
+              </td>
+              <td class="px-6 py-4 text-slate-400">
+                Kalkulasi otomatis denda per hari keterlambatan berdasarkan selisih tanggal kembali.
+              </td>
+              <td class="px-6 py-4">
+                <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                  🟡 50% Parsial
+                </span>
+              </td>
+            </tr>
+
+            <tr class="hover:bg-slate-800/40 transition">
+              <td class="px-6 py-4 font-semibold text-white">7. Pembayaran (Payment)</td>
+              <td class="px-6 py-4 text-slate-300">
+                <span class="text-emerald-400 font-medium">✓</span> Pencatatan pembayaran, validasi parsing waktu/tanggal, update bukti transfer & status pembayaran.
+              </td>
+              <td class="px-6 py-4 text-slate-400">
+                Otomatisasi pengubahan status sewa (`rental_status`) menjadi `confirmed` saat pembayaran diverifikasi.
+              </td>
+              <td class="px-6 py-4">
+                <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                  70% Siap
+                </span>
+              </td>
+            </tr>
+
+            <tr class="hover:bg-slate-800/40 transition">
+              <td class="px-6 py-4 font-semibold text-white">8. Rekap Penjualan (Admin)</td>
+              <td class="px-6 py-4 text-slate-500">
+                Belum dimulai
+              </td>
+              <td class="px-6 py-4 text-slate-400">
+                Endpoint laporan: total omset, total sewa per produk, total denda keterlambatan, statistik sewa aktif.
+              </td>
+              <td class="px-6 py-4">
+                <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold bg-slate-700 text-slate-300">
+                  ⚪ Belum Dibuat
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Bug Findings Section -->
+    <section class="space-y-4">
+      <div class="flex items-center justify-between">
+        <h2 class="text-base font-semibold text-white flex items-center gap-2">
+          <span>🐛</span> Detail Bug Kritis & Rekomendasi Solusi
+        </h2>
+        <span class="text-xs text-slate-400">Ditemukan dari audit statis kode sumber</span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Bug 1 -->
+        <div class="bg-slate-900 border border-emerald-900/40 rounded-xl p-5 shadow-sm space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded">
+              BUG #1 [TERSELESAIKAN] - Standardisasi Skema Tabel Kategori
+            </span>
+            <span class="text-xs text-slate-500">category_controller.go</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Seluruh query telah disatukan secara presisi menggunakan tabel <code>category</code> dengan kolom <code>id_category</code> dan <code>category_name</code> sesuai ERD.
+          </p>
+          <div class="p-3 bg-slate-950 rounded-lg border border-slate-800 text-xs text-emerald-300">
+            <strong>Status:</strong> Diperbaiki & Lolos Kompilasi.
+          </div>
+        </div>
+
+        <!-- Bug 2 -->
+        <div class="bg-slate-900 border border-emerald-900/40 rounded-xl p-5 shadow-sm space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded">
+              BUG #2 [TERSELESAIKAN] - Handler Lengkap & Terintegrasi
+            </span>
+            <span class="text-xs text-slate-500">category_controller.go</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Fungsi <code>CategoryHandler</code> telah mengarahkan semua metode HTTP (GET list, GET by ID, POST create, PUT update, DELETE) secara rapi dan modular.
+          </p>
+          <div class="p-3 bg-slate-950 rounded-lg border border-slate-800 text-xs text-emerald-300">
+            <strong>Status:</strong> Diperbaiki & Mendukung fleksibilitas route <code>/category</code> dan <code>/api/category</code>.
+          </div>
+        </div>
+
+        <!-- Bug 3 -->
+        <div class="bg-slate-900 border border-amber-900/40 rounded-xl p-5 shadow-sm space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded">
+              BUG #3 - Stok Unit Terkunci Permanen
+            </span>
+            <span class="text-xs text-slate-500">rental_controllers.go</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Saat sewa dibuat, status unit di <code>item_instances</code> diubah menjadi <code>'rented'</code>. Namun saat transaksi selesai (pengembalian barang via <code>UpdateRental</code>), status unit tidak pernah diubah kembali menjadi <code>'available'</code>.
+          </p>
+          <div class="p-3 bg-slate-950 rounded-lg border border-slate-800 text-xs text-emerald-300">
+            <strong>Solusi Cepat:</strong> Tambahkan query <code>UPDATE item_instances SET status = 'available' WHERE id = ?</code> saat rental status menjadi completed/returned.
+          </div>
+        </div>
+
+        <!-- Bug 4 -->
+        <div class="bg-slate-900 border border-amber-900/40 rounded-xl p-5 shadow-sm space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded">
+              BUG #4 - Risiko Double Booking Unit Fisik
+            </span>
+            <span class="text-xs text-slate-500">rental_service.go</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Fungsi <code>CreateRental</code> tidak memvalidasi apakah unit barang (<code>id_unit</code>) saat ini sedang berstatus <code>'available'</code> sebelum mengeksekusi insert sewa baru.
+          </p>
+          <div class="p-3 bg-slate-950 rounded-lg border border-slate-800 text-xs text-emerald-300">
+            <strong>Solusi Cepat:</strong> Cek status unit di database terlebih dahulu, jika bukan <code>'available'</code>, tolak dengan status HTTP 400 Bad Request.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Step by Step Plan -->
+    <section class="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-sm space-y-4">
+      <h2 class="text-base font-semibold text-white flex items-center gap-2">
+        <span>🚀</span> Urutan Rencana Eksekusi Fitur per Fitur
+      </h2>
+      <ol class="space-y-3 text-xs sm:text-sm text-slate-300 list-decimal list-inside">
+        <li><strong class="text-white">Fitur 1 (Kategori):</strong> Bersihkan inkonsistensi query SQL dan selesaikan <code>CategoryHandler</code>.</li>
+        <li><strong class="text-white">Fitur 2 (Master Produk):</strong> Buka akses GET publik dan perbaiki penamaan kolom primary key.</li>
+        <li><strong class="text-white">Fitur 3 (Unit Fisik):</strong> Sinkronisasi nomor aset dan endpoint filter ketersediaan.</li>
+        <li><strong class="text-white">Fitur 4 (Rental Engine):</strong> Pasang proteksi *double booking*, sinkronisasi pengembalian unit, dan kalkulasi denda otomatis.</li>
+        <li><strong class="text-white">Fitur 5 (Pembayaran):</strong> Integrasikan perubahan status pembayaran dengan status pesanan rental.</li>
+        <li><strong class="text-white">Fitur 6 (Laporan & Rekapitulasi):</strong> Bangun endpoint rekap omset dan laporan sewa admin.</li>
+        <li><strong class="text-white">Fitur 7 (RBAC & Keamanan):</strong> Pasang middleware pemisah otorisasi Admin vs Pengguna.</li>
+      </ol>
+    </section>
+
+  </main>
+
+  <footer class="border-t border-slate-800 py-6 mt-12 text-center text-xs text-slate-500">
+    Dokumen Audit Resmi &bull; Sistem Rental Barang REST API (Golang) &bull; 2026
+  </footer>
+</body>
+</html>
+
