@@ -45,11 +45,11 @@
       <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-sm">
         <div class="text-slate-400 text-xs font-medium uppercase tracking-wider">Tingkat Penyelesaian</div>
         <div class="text-3xl font-extrabold text-white mt-2 flex items-baseline gap-2">
-          <span>70%</span>
+          <span>75%</span>
           <span class="text-xs font-semibold text-emerald-400">Tahap Stabilisasi</span>
         </div>
         <div class="w-full bg-slate-800 rounded-full h-2 mt-3 overflow-hidden">
-          <div class="bg-indigo-500 h-2 rounded-full" style="width: 70%"></div>
+          <div class="bg-indigo-500 h-2 rounded-full" style="width: 75%"></div>
         </div>
       </div>
 
@@ -122,17 +122,17 @@
               </td>
             </tr>
 
-            <tr class="hover:bg-slate-800/40 transition">
+            <tr class="hover:bg-slate-800/40 transition bg-emerald-950/10">
               <td class="px-6 py-4 font-semibold text-white">3. Master Produk</td>
               <td class="px-6 py-4 text-slate-300">
-                <span class="text-emerald-400 font-medium">✓</span> Tambah produk, list semua produk, update produk, hapus produk dengan database transaction (ACID).
+                <span class="text-emerald-400 font-medium">✓</span> Akses katalog publik (tanpa token), fitur pencarian produk (?search=), filter kategori (?category_id=), detail produk dengan list unit fisik, mutasi aman (POST/PUT/DELETE) dengan JWT, proteksi hapus jika unit sedang disewa.
               </td>
-              <td class="px-6 py-4 text-slate-400">
-                Buka akses GET produk untuk publik tanpa token, pencarian / filter kategori.
+              <td class="px-6 py-4 text-emerald-400 font-medium">
+                Selesai 100% & Teruji
               </td>
               <td class="px-6 py-4">
                 <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                  80% Siap
+                  🟢 100% Selesai
                 </span>
               </td>
             </tr>

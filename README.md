@@ -193,10 +193,10 @@ Semua endpoint dengan tanda 🔒 mewajibkan header:
 ### 3. Katalog Produk & Unit Fisik
 | Method | Endpoint | Auth | Deskripsi |
 |---|---|:---:|---|
-| `GET` | `/products/` | 🔒 | Mengambil seluruh katalog produk |
-| `POST` | `/products/` | 🔒 | Menambah produk baru |
+| `GET` | `/products` / `/products/{id}` | Publik | Mengambil katalog produk (mendukung `?search=nama` & `?category_id=id`) atau detail produk beserta unit fisiknya |
+| `POST` | `/products` | 🔒 | Menambah produk baru ke katalog (validasi kategori wajib ada) |
 | `PUT` | `/products/{id}` | 🔒 | Mengubah data produk |
-| `DELETE` | `/products/{id}` | 🔒 | Menghapus produk beserta unit fisiknya (ACID Transaction) |
+| `DELETE` | `/products/{id}` | 🔒 | Menghapus produk beserta unit fisiknya (ACID Transaction & proteksi jika unit aktif disewa) |
 | `GET` | `/item-instances` | 🔒 | Mengambil seluruh unit fisik |
 | `POST` | `/item-instances` | 🔒 | Mendaftarkan unit fisik / serial baru |
 | `PUT` | `/item-instances/{id}` | 🔒 | Mengubah status aset (`available`, `rented`, `maintenance`) |
