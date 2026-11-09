@@ -36,6 +36,8 @@ func SetupRoutes() http.Handler {
 	mux.HandleFunc("/api/category/", middlewares.AuthMiddleware(controllers.CategoryHandler))
 	mux.HandleFunc("/rental", middlewares.AuthMiddleware(controllers.RentalHandler))
 	mux.HandleFunc("/rental/", middlewares.AuthMiddleware(controllers.RentalHandler))
+	mux.HandleFunc("/api/rental", middlewares.AuthMiddleware(controllers.RentalHandler))
+	mux.HandleFunc("/api/rental/", middlewares.AuthMiddleware(controllers.RentalHandler))
 	mux.HandleFunc("/payments", middlewares.AuthMiddleware(controllers.PaymentHandler))
 	mux.HandleFunc("/payments/", middlewares.AuthMiddleware(controllers.PaymentHandler))
 	mux.HandleFunc("/item-instances", middlewares.AuthMiddleware(controllers.ItemInstanceHandler))

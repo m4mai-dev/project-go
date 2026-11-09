@@ -205,9 +205,10 @@ Semua endpoint dengan tanda 🔒 mewajibkan header:
 ### 4. Rental & Pembayaran
 | Method | Endpoint | Auth | Deskripsi |
 |---|---|:---:|---|
-| `GET` | `/rental` | 🔒 | Mengambil daftar seluruh transaksi rental |
-| `POST` | `/rental` | 🔒 | Membuat transaksi rental baru (otomatis mengubah status unit ke `rented`) |
-| `PUT` | `/rental/{id}` | 🔒 | Update pengembalian barang, input denda keterlambatan & status sewa |
+| `GET` | `/rental` / `/rental/{id}` | 🔒 | Mengambil daftar rental (filter `?status=pending` untuk pesanan masuk, `?user_id=1` untuk riwayat user) atau detail 1 transaksi |
+| `POST` | `/rental` | 🔒 | Membuat transaksi rental baru (anti double-booking & auto kalkulasi biaya sewa, mengunci unit fisik ke `rented`) |
+| `PUT` | `/rental/{id}` | 🔒 | Memperbarui transaksi: input `actual_return_date` otomatis menghitung `late_fee` jika terlambat, dan OTOMATIS merestore status unit fisik kembali ke `available` |
+| `DELETE` | `/rental/{id}` | 🔒 | Membatalkan/menghapus transaksi rental dan memulihkan status unit menjadi `available` |
 | `GET` | `/payments` | 🔒 | Mengambil daftar transaksi pembayaran |
 | `POST` | `/payments` | 🔒 | Mencatat pembayaran baru |
 | `PUT` | `/payments/{id}` | 🔒 | Memperbarui status pembayaran & bukti transfer |

@@ -45,11 +45,11 @@
       <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-sm">
         <div class="text-slate-400 text-xs font-medium uppercase tracking-wider">Tingkat Penyelesaian</div>
         <div class="text-3xl font-extrabold text-white mt-2 flex items-baseline gap-2">
-          <span>80%</span>
+          <span>90%</span>
           <span class="text-xs font-semibold text-emerald-400">Tahap Stabilisasi</span>
         </div>
         <div class="w-full bg-slate-800 rounded-full h-2 mt-3 overflow-hidden">
-          <div class="bg-indigo-500 h-2 rounded-full" style="width: 80%"></div>
+          <div class="bg-indigo-500 h-2 rounded-full" style="width: 90%"></div>
         </div>
       </div>
 
@@ -152,32 +152,32 @@
               </td>
             </tr>
 
-            <tr class="hover:bg-slate-800/40 transition">
+            <tr class="hover:bg-slate-800/40 transition bg-emerald-950/10">
               <td class="px-6 py-4 font-semibold text-white">5. Transaksi Rental</td>
               <td class="px-6 py-4 text-slate-300">
-                <span class="text-emerald-400 font-medium">✓</span> Pembuatan transaksi rental, pengubahan status unit otomatis menjadi `rented`, list transaksi.
+                <span class="text-emerald-400 font-medium">✓</span> Pembuatan sewa (CreateRental), get all rental, get by ID, filter pesanan masuk (?status=pending), filter riwayat user (?user_id=), validasi anti double-booking dengan locking transaksi ACID (FOR UPDATE), dan kalkulasi otomatis durasi sewa x tarif per hari.
               </td>
-              <td class="px-6 py-4 text-slate-400">
-                Validasi ketersediaan unit sebelum sewa (*double-booking prevention*), pengembalian otomatis status unit ke `available` saat barang dikembalikan.
+              <td class="px-6 py-4 text-emerald-400 font-medium">
+                Selesai 100% & Teruji
               </td>
               <td class="px-6 py-4">
-                <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold bg-rose-500/10 text-rose-400 border border-rose-500/20">
-                  🔴 Perlu Validasi
+                <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                  🟢 100% Selesai
                 </span>
               </td>
             </tr>
 
-            <tr class="hover:bg-slate-800/40 transition">
+            <tr class="hover:bg-slate-800/40 transition bg-emerald-950/10">
               <td class="px-6 py-4 font-semibold text-white">6. Pengembalian & Denda</td>
               <td class="px-6 py-4 text-slate-300">
-                <span class="text-emerald-400 font-medium">✓</span> Field `actual_return_date` dan `late_fee` di tabel `rentals`.
+                <span class="text-emerald-400 font-medium">✓</span> Catat tanggal kembali aktual (actual_return_date), kalkulasi otomatis denda keterlambatan (late_fee) jika melebihi batas return_date, dan OTOMATIS mengembalikan status unit fisik di item_instances menjadi 'available' agar dapat disewa kembali.
               </td>
-              <td class="px-6 py-4 text-slate-400">
-                Kalkulasi otomatis denda per hari keterlambatan berdasarkan selisih tanggal kembali.
+              <td class="px-6 py-4 text-emerald-400 font-medium">
+                Selesai 100% & Teruji
               </td>
               <td class="px-6 py-4">
-                <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/20">
-                  🟡 50% Parsial
+                <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                  🟢 100% Selesai
                 </span>
               </td>
             </tr>
@@ -259,34 +259,34 @@
         </div>
 
         <!-- Bug 3 -->
-        <div class="bg-slate-900 border border-amber-900/40 rounded-xl p-5 shadow-sm space-y-3">
+        <div class="bg-slate-900 border border-emerald-900/40 rounded-xl p-5 shadow-sm space-y-3">
           <div class="flex items-center justify-between">
-            <span class="text-xs font-bold text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded">
-              BUG #3 - Stok Unit Terkunci Permanen
+            <span class="text-xs font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded">
+              BUG #3 [TERSELESAIKAN] - Sinkronisasi Status Unit Fisik Selesai Sewa
             </span>
             <span class="text-xs text-slate-500">rental_controllers.go</span>
           </div>
           <p class="text-xs text-slate-300 leading-relaxed">
-            Saat sewa dibuat, status unit di <code>item_instances</code> diubah menjadi <code>'rented'</code>. Namun saat transaksi selesai (pengembalian barang via <code>UpdateRental</code>), status unit tidak pernah diubah kembali menjadi <code>'available'</code>.
+            Pada saat transaksi diupdate menjadi status <code>completed</code>, <code>returned</code>, atau <code>cancelled</code>, sistem sekarang secara otomatis mengembalikan status unit fisik di <code>item_instances</code> menjadi <code>'available'</code> agar dapat disewa kembali.
           </p>
           <div class="p-3 bg-slate-950 rounded-lg border border-slate-800 text-xs text-emerald-300">
-            <strong>Solusi Cepat:</strong> Tambahkan query <code>UPDATE item_instances SET status = 'available' WHERE id = ?</code> saat rental status menjadi completed/returned.
+            <strong>Status:</strong> Diperbaiki & Terintegrasi Transaksi Database.
           </div>
         </div>
 
         <!-- Bug 4 -->
-        <div class="bg-slate-900 border border-amber-900/40 rounded-xl p-5 shadow-sm space-y-3">
+        <div class="bg-slate-900 border border-emerald-900/40 rounded-xl p-5 shadow-sm space-y-3">
           <div class="flex items-center justify-between">
-            <span class="text-xs font-bold text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded">
-              BUG #4 - Risiko Double Booking Unit Fisik
+            <span class="text-xs font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded">
+              BUG #4 [TERSELESAIKAN] - Proteksi Anti Double-Booking
             </span>
             <span class="text-xs text-slate-500">rental_service.go</span>
           </div>
           <p class="text-xs text-slate-300 leading-relaxed">
-            Fungsi <code>CreateRental</code> tidak memvalidasi apakah unit barang (<code>id_unit</code>) saat ini sedang berstatus <code>'available'</code> sebelum mengeksekusi insert sewa baru.
+            Fungsi <code>CreateRental</code> sekarang mengunci ketersediaan unit fisik menggunakan klausa <code>FOR UPDATE</code> dan memverifikasi status <code>available</code> sebelum transaksi sewa dicatat.
           </p>
           <div class="p-3 bg-slate-950 rounded-lg border border-slate-800 text-xs text-emerald-300">
-            <strong>Solusi Cepat:</strong> Cek status unit di database terlebih dahulu, jika bukan <code>'available'</code>, tolak dengan status HTTP 400 Bad Request.
+            <strong>Status:</strong> Diperbaiki & Mencegah tabrakan peminjaman konkruen.
           </div>
         </div>
       </div>

@@ -9,12 +9,13 @@
 ## 1. 📈 Ringkasan Eksekutif (Progress Scorecard)
 
 ```
-[████████████████░░░░] 80% Total Penyelesaian
+[██████████████████░░] 90% Total Penyelesaian
 - Modul Otentikasi & Pengguna : 85% (Selesai, perlu RBAC)
 - Modul Kategori              : 100% (SELESAI & DIPERBAIKI: Skema & Query Terstandardisasi, Handler Lengkap)
 - Modul Produk                : 100% (SELESAI & DIPERBAIKI: Akses Publik Terbuka, Search & Filter, Detail Unit Fisik, Kompatibilitas PK)
 - Modul Unit Fisik (Instances): 100% (SELESAI & DIPERBAIKI: Validasi Asset Code Unik, Filter Product & Status, Proteksi Unit Rented, Kompatibilitas ID Unit)
-- Modul Rental / Peminjaman   : 60% (Perlu validasi stok & kalkulasi denda)
+- Modul Rental / Peminjaman   : 100% (SELESAI & DIPERBAIKI: Proteksi Anti Double Booking, Auto Durasi x Tarif, Reset Status Unit ke Available)
+- Modul Pengembalian & Denda  : 100% (SELESAI & DIPERBAIKI: Auto Calculation Late Fee Keterlambatan Pengembalian)
 - Modul Pembayaran            : 70% (Perlu integrasi status rental)
 - Laporan & Rekapitulasi      : 0%  (Belum dibuat)
 ```
@@ -29,8 +30,8 @@
 | **2. Kategori Produk** | CRUD Kategori Lengkap (`GetAll`, `GetByID`, `Create`, `Update`, `Delete`), Routing Fleksibel (`/category` & `/api/category`) | Sudah Selesai 100% | ~~Inkonsistensi Skema & Handler Kosong~~ **(SUDAH DIPERBAIKI)**: Seluruh query memakai tabel `category` (`id_category`, `category_name`), `CategoryHandler` memproses seluruh metode HTTP secara modular. | 🟢 Selesai (100%) |
 | **3. Master Produk** | List Produk Publik, Detail Produk dengan List Unit Fisik, Search by Name (`?search=...`), Filter Kategori (`?category_id=...`), Tambah Produk (validasi kategori), Update Produk, Hapus Produk dengan ACID Transaction & proteksi unit sewa aktif. | Sudah Selesai 100% | ~~Akses Terkunci & Inkompatibilitas PK~~ **(SUDAH DIPERBAIKI)**: GET dibuka untuk publik tanpa token, mutasi (POST/PUT/DELETE) wajib Bearer JWT, deteksi otomatis PK `id_product` / `id`. | 🟢 Selesai (100%) |
 | **4. Unit Fisik (Item Instances)** | CRUD Unit Fisik Lengkap, Get By ID, Validasi `asset_code` Unik, Validasi Keberadaan Produk, Filter `?product_id=`, `?status=`, `?search=`, Proteksi Hapus Unit Status `rented`, Kompatibilitas `id_unit` (ERD). | Sudah Selesai 100% | ~~Filter Ketersediaan & Sinkronisasi ID~~ **(SUDAH DIPERBAIKI)**: Ditambahkan filter komprehensif, proteksi integritas transaksi sewa, dan penggabungan nama produk (`product_name`). | 🟢 Selesai (100%) |
-| **5. Transaksi Rental** | Buat Sewa (`CreateRental`), Ubah status unit jadi `rented`, Get All Rentals | Validasi ketersediaan unit, Kalkulasi otomatis durasi x harga, Filter riwayat per user | Tidak ada validasi apakah unit sudah disewa orang lain pada tanggal tersebut. Pengembalian (`UpdateRental`) tidak otomatis mengembalikan status unit fisik menjadi `available`. | 🔴 Kritis |
-| **6. Pengembalian & Denda** | Field `actual_return_date` & `late_fee` di tabel `rentals` | Kalkulasi otomatis denda per hari terlambat & validasi pengembalian oleh Admin | Denda (`late_fee`) saat ini dimasukkan secara manual tanpa rumus perhitungan otomatis berdasarkan selisih tanggal. | 🟡 Sedang |
+| **5. Transaksi Rental** | Buat Sewa (`CreateRental`), Get All Rentals, Get By ID, Filter `?status=pending` (Pesanan Masuk) & `?user_id=`, Validasi Anti-Double Booking (FOR UPDATE), Auto Kalkulasi Durasi Sewa x Harga Harian. | Sudah Selesai 100% | ~~Risiko Double-Booking & Sinkronisasi Unit~~ **(SUDAH DIPERBAIKI)**: Unit fisik divalidasi ketersediaannya sebelum sewa, dikunci secara atomik dengan database transaction. | 🟢 Selesai (100%) |
+| **6. Pengembalian & Denda** | Catat Pengembalian Barang (`actual_return_date`), Auto Kalkulasi Denda Keterlambatan (`late_fee`), Otomatis Kembalikan Status Unit Fisik menjadi `available`. | Sudah Selesai 100% | ~~Stok Unit Terkunci Permanen & Input Denda Manual~~ **(SUDAH DIPERBAIKI)**: Unit otomatis kembali ke `available` saat rental selesai/dikembalikan, denda otomatis dihitung per hari keterlambatan. | 🟢 Selesai (100%) |
 | **7. Pembayaran** | Pencatatan pembayaran, format tanggal, update status pembayaran | Verifikasi pembayaran otomatis memperbarui `rental_status` | Nama tabel menggunakan `payment` sedangkan di ERD adalah `payments`. Pembayaran berhasil tidak otomatis mengubah status rental menjadi `confirmed`/`active`. | 🟡 Sedang |
 | **8. Rekap Penjualan (Laporan)** | - | Endpoint rekapitulasi omset, total sewa, total denda, grafik bulanan | Belum ada controller maupun route untuk use case "rekap penjualan" admin. | 🔴 Tinggi |
 
