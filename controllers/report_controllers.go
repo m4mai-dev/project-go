@@ -131,3 +131,4 @@ func SalesReportHandler(w http.ResponseWriter, r *http.Request) {
 		"data":    report,
 	})
 }
+

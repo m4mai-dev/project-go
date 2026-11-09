@@ -44,3 +44,4 @@ type SalesReportResponse struct {
 	TopRentedProducts  []TopRentedProduct        `json:"top_rented_products"`
 	RecentTransactions []RecentTransactionReport `json:"recent_transactions"`
 }
+
