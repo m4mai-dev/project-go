@@ -214,6 +214,11 @@ Semua endpoint dengan tanda 🔒 mewajibkan header:
 | `PUT` | `/payments/{id}` | 🔒 | Memperbarui/memvalidasi pembayaran (saat status `completed`, pesanan rental otomatis disetujui / `confirmed`) |
 | `DELETE` | `/payments/{id}` | 🔒 | Menghapus catatan pembayaran |
 
+### 5. Laporan & Rekapitulasi (Admin)
+| Method | Endpoint | Auth | Deskripsi |
+|---|---|:---:|---|
+| `GET` | `/reports/sales` / `/api/reports/sales` | 🔒 | Rekapitulasi penjualan admin: total revenue, total biaya sewa, total denda, rincian status pesanan, 5 produk terlaris, dan 5 transaksi terkini |
+
 ---
 
 ## 📂 Struktur Direktori Proyek

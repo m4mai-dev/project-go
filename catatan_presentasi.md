@@ -76,6 +76,7 @@ Siapkan Postman atau cURL dengan skenario pengujian runut berikut:
 | **Step 4** | Buat Transaksi Sewa<br>`POST /rental` | `{"id_user": 1, "id_unit": 2, "delivery_address":"Jl. Sudirman", "start_date":"2026-11-10", "return_date":"2026-11-12", "rental_fee": 300000}` | HTTP 201 Created & status unit otomatis berubah menjadi `rented` |
 | **Step 5** | Bayar Sewa<br>`POST /payments` | `{"id_rentals": 1, "amount": 300000, "payment_method": "transfer_bca", "payment_proof_url": "bukti.jpg"}` | HTTP 201 Created & Bukti bayar tersimpan |
 | **Step 6** | Pengembalian Barang & Denda<br>`PUT /rental/1` | `{"actual_return_date": "2026-11-13", "late_fee": 50000, "rental_status": "completed"}` | HTTP 200 OK & Unit fisik kembali berstatus `available` |
+| **Step 7** | Rekap Penjualan (Admin)<br>`GET /reports/sales` | Header: `Authorization: Bearer <token>` | HTTP 200 OK & Dashboard laporan omset, denda, produk terlaris, dan histori transaksi |
 
 ---
 

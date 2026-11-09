@@ -49,5 +49,15 @@ func SetupRoutes() http.Handler {
 	mux.HandleFunc("/api/item-instances", middlewares.AuthMiddleware(controllers.ItemInstanceHandler))
 	mux.HandleFunc("/api/item-instances/", middlewares.AuthMiddleware(controllers.ItemInstanceHandler))
 
+	// Endpoint Rekapitulasi & Laporan Penjualan (Admin)
+	mux.HandleFunc("/reports/sales", middlewares.AuthMiddleware(controllers.SalesReportHandler))
+	mux.HandleFunc("/reports/sales/", middlewares.AuthMiddleware(controllers.SalesReportHandler))
+	mux.HandleFunc("/reports", middlewares.AuthMiddleware(controllers.SalesReportHandler))
+	mux.HandleFunc("/reports/", middlewares.AuthMiddleware(controllers.SalesReportHandler))
+	mux.HandleFunc("/api/reports/sales", middlewares.AuthMiddleware(controllers.SalesReportHandler))
+	mux.HandleFunc("/api/reports/sales/", middlewares.AuthMiddleware(controllers.SalesReportHandler))
+	mux.HandleFunc("/api/reports", middlewares.AuthMiddleware(controllers.SalesReportHandler))
+	mux.HandleFunc("/api/reports/", middlewares.AuthMiddleware(controllers.SalesReportHandler))
+
 	return mux
 }
