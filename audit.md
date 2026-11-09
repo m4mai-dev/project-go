@@ -9,11 +9,11 @@
 ## 1. 📈 Ringkasan Eksekutif (Progress Scorecard)
 
 ```
-[███████████████░░░░░] 75% Total Penyelesaian
+[████████████████░░░░] 80% Total Penyelesaian
 - Modul Otentikasi & Pengguna : 85% (Selesai, perlu RBAC)
 - Modul Kategori              : 100% (SELESAI & DIPERBAIKI: Skema & Query Terstandardisasi, Handler Lengkap)
 - Modul Produk                : 100% (SELESAI & DIPERBAIKI: Akses Publik Terbuka, Search & Filter, Detail Unit Fisik, Kompatibilitas PK)
-- Modul Unit Fisik (Instances): 85% (Selesai, perlu sinkronisasi ID)
+- Modul Unit Fisik (Instances): 100% (SELESAI & DIPERBAIKI: Validasi Asset Code Unik, Filter Product & Status, Proteksi Unit Rented, Kompatibilitas ID Unit)
 - Modul Rental / Peminjaman   : 60% (Perlu validasi stok & kalkulasi denda)
 - Modul Pembayaran            : 70% (Perlu integrasi status rental)
 - Laporan & Rekapitulasi      : 0%  (Belum dibuat)
@@ -28,7 +28,7 @@
 | **1. Auth & User Management** | Registrasi, Login JWT, Enkripsi Bcrypt, CRUD User | RBAC (Role-Based Access Control) & Filter User Profil Sendiri | Siapapun dengan token JWT dapat melihat dan mengedit data user lain (`GET /users`, `PUT /users/{id}`) tanpa filter kepemilikan/role. | 🔴 Tinggi |
 | **2. Kategori Produk** | CRUD Kategori Lengkap (`GetAll`, `GetByID`, `Create`, `Update`, `Delete`), Routing Fleksibel (`/category` & `/api/category`) | Sudah Selesai 100% | ~~Inkonsistensi Skema & Handler Kosong~~ **(SUDAH DIPERBAIKI)**: Seluruh query memakai tabel `category` (`id_category`, `category_name`), `CategoryHandler` memproses seluruh metode HTTP secara modular. | 🟢 Selesai (100%) |
 | **3. Master Produk** | List Produk Publik, Detail Produk dengan List Unit Fisik, Search by Name (`?search=...`), Filter Kategori (`?category_id=...`), Tambah Produk (validasi kategori), Update Produk, Hapus Produk dengan ACID Transaction & proteksi unit sewa aktif. | Sudah Selesai 100% | ~~Akses Terkunci & Inkompatibilitas PK~~ **(SUDAH DIPERBAIKI)**: GET dibuka untuk publik tanpa token, mutasi (POST/PUT/DELETE) wajib Bearer JWT, deteksi otomatis PK `id_product` / `id`. | 🟢 Selesai (100%) |
-| **4. Unit Fisik (Item Instances)** | CRUD Unit Fisik, Status Aset (`available`, `rented`, `maintenance`) | Filter unit berdasarkan produk & status ketersediaan | Penamaan kolom `id` di controller berbeda dengan ERD (`id_unit`), kolom `id_products` berbeda dengan ERD (`id_produk`). | 🟡 Sedang |
+| **4. Unit Fisik (Item Instances)** | CRUD Unit Fisik Lengkap, Get By ID, Validasi `asset_code` Unik, Validasi Keberadaan Produk, Filter `?product_id=`, `?status=`, `?search=`, Proteksi Hapus Unit Status `rented`, Kompatibilitas `id_unit` (ERD). | Sudah Selesai 100% | ~~Filter Ketersediaan & Sinkronisasi ID~~ **(SUDAH DIPERBAIKI)**: Ditambahkan filter komprehensif, proteksi integritas transaksi sewa, dan penggabungan nama produk (`product_name`). | 🟢 Selesai (100%) |
 | **5. Transaksi Rental** | Buat Sewa (`CreateRental`), Ubah status unit jadi `rented`, Get All Rentals | Validasi ketersediaan unit, Kalkulasi otomatis durasi x harga, Filter riwayat per user | Tidak ada validasi apakah unit sudah disewa orang lain pada tanggal tersebut. Pengembalian (`UpdateRental`) tidak otomatis mengembalikan status unit fisik menjadi `available`. | 🔴 Kritis |
 | **6. Pengembalian & Denda** | Field `actual_return_date` & `late_fee` di tabel `rentals` | Kalkulasi otomatis denda per hari terlambat & validasi pengembalian oleh Admin | Denda (`late_fee`) saat ini dimasukkan secara manual tanpa rumus perhitungan otomatis berdasarkan selisih tanggal. | 🟡 Sedang |
 | **7. Pembayaran** | Pencatatan pembayaran, format tanggal, update status pembayaran | Verifikasi pembayaran otomatis memperbarui `rental_status` | Nama tabel menggunakan `payment` sedangkan di ERD adalah `payments`. Pembayaran berhasil tidak otomatis mengubah status rental menjadi `confirmed`/`active`. | 🟡 Sedang |

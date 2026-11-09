@@ -80,7 +80,7 @@ Sistem memiliki dua aktor utama:
 | **User** | `/users`, `/users/{id}` | GET, PUT, DELETE | Ambil semua user, update profil, hapus user. |
 | **Category** | `/category`, `/category/{id}`, `/api/category`, `/api/category/{id}` | GET, POST, PUT, DELETE | **Selesai 100%**: CRUD Kategori lengkap, validasi nama, standardisasi nama tabel `category` & kolom `id_category`, proteksi error relasi foreign key. |
 | **Products** | `/products`, `/products/{id}`, `/api/products`, `/api/products/{id}` | GET (Publik), POST, PUT, DELETE (Auth) | **Selesai 100%**: Katalog publik terbuka tanpa token, search query (`?search=...`), filter kategori (`?category_id=...`), detail produk + unit fisik, proteksi hapus jika unit aktif disewa, deteksi otomatis primary key (`id_product` / `id`). |
-| **Item Instances** | `/item-instances`, `/{id}` | GET, POST, PUT, DELETE | CRUD unit fisik barang & status aset. |
+| **Item Instances** | `/item-instances`, `/{id}`, `/api/item-instances`, `/{id}` | GET, POST, PUT, DELETE | **Selesai 100%**: CRUD unit fisik individual, Get By ID, validasi nomor aset unik (`asset_code`), filter ketersediaan status & produk (`?product_id=`, `?status=`), proteksi anti-hapus saat unit berstatus `rented`. |
 | **Rentals** | `/rental`, `/rental/{id}` | GET, POST, PUT | Pembuatan sewa (update status unit ke `rented`), list rental, update status pengembalian. |
 | **Payments** | `/payments`, `/payments/{id}` | GET, POST, PUT, DELETE | Input pembayaran, list pembayaran, update status bukti bayar. |
 

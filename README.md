@@ -197,10 +197,10 @@ Semua endpoint dengan tanda 🔒 mewajibkan header:
 | `POST` | `/products` | 🔒 | Menambah produk baru ke katalog (validasi kategori wajib ada) |
 | `PUT` | `/products/{id}` | 🔒 | Mengubah data produk |
 | `DELETE` | `/products/{id}` | 🔒 | Menghapus produk beserta unit fisiknya (ACID Transaction & proteksi jika unit aktif disewa) |
-| `GET` | `/item-instances` | 🔒 | Mengambil seluruh unit fisik |
-| `POST` | `/item-instances` | 🔒 | Mendaftarkan unit fisik / serial baru |
+| `GET` | `/item-instances` / `/item-instances/{id}` | 🔒 | Mengambil unit fisik (mendukung filter `?product_id=id`, `?status=available`, `?search=kode`) atau detail 1 unit fisik |
+| `POST` | `/item-instances` | 🔒 | Mendaftarkan unit fisik baru (validasi unik `asset_code` & produk wajib ada) |
 | `PUT` | `/item-instances/{id}` | 🔒 | Mengubah status aset (`available`, `rented`, `maintenance`) |
-| `DELETE` | `/item-instances/{id}` | 🔒 | Menghapus unit fisik |
+| `DELETE` | `/item-instances/{id}` | 🔒 | Menghapus unit fisik (diproteksi jika unit sedang berstatus `rented`) |
 
 ### 4. Rental & Pembayaran
 | Method | Endpoint | Auth | Deskripsi |

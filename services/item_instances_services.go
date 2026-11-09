@@ -10,9 +10,10 @@ func CreateItemInstance(input models.CreateItemInstanceInput) (models.ItemInstan
 		input.Status = "available"
 	}
 
+	productID := input.GetProductID()
 	query := `INSERT INTO item_instances (id_products, asset_code, status) VALUES (?, ?, ?)`
 
-	result, err := config.DB.Exec(query, input.IDProducts, input.AssetCode, input.Status)
+	result, err := config.DB.Exec(query, productID, input.AssetCode, input.Status)
 	if err != nil {
 		return models.ItemInstance{}, err
 	}
@@ -24,7 +25,8 @@ func CreateItemInstance(input models.CreateItemInstanceInput) (models.ItemInstan
 
 	newItemInstance := models.ItemInstance{
 		ID:         uint(lastID),
-		IDProducts: input.IDProducts,
+		IDUnit:     uint(lastID),
+		IDProducts: productID,
 		AssetCode:  input.AssetCode,
 		Status:     input.Status,
 	}
