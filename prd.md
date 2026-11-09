@@ -82,7 +82,7 @@ Sistem memiliki dua aktor utama:
 | **Products** | `/products`, `/products/{id}`, `/api/products`, `/api/products/{id}` | GET (Publik), POST, PUT, DELETE (Auth) | **Selesai 100%**: Katalog publik terbuka tanpa token, search query (`?search=...`), filter kategori (`?category_id=...`), detail produk + unit fisik, proteksi hapus jika unit aktif disewa, deteksi otomatis primary key (`id_product` / `id`). |
 | **Item Instances** | `/item-instances`, `/{id}`, `/api/item-instances`, `/{id}` | GET, POST, PUT, DELETE | **Selesai 100%**: CRUD unit fisik individual, Get By ID, validasi nomor aset unik (`asset_code`), filter ketersediaan status & produk (`?product_id=`, `?status=`), proteksi anti-hapus saat unit berstatus `rented`. |
 | **Rentals** | `/rental`, `/rental/{id}`, `/api/rental`, `/api/rental/{id}` | GET, POST, PUT, DELETE | **Selesai 100%**: Pembuatan sewa dengan proteksi anti-double booking (FOR UPDATE transaction), auto kalkulasi durasi & biaya sewa, filter pesanan masuk (`?status=pending`) & riwayat (`?user_id=`), auto kalkulasi denda keterlambatan (`late_fee`), dan otomatis reset status unit fisik kembali ke `available` saat transaksi selesai/dikembalikan. |
-| **Payments** | `/payments`, `/payments/{id}` | GET, POST, PUT, DELETE | Input pembayaran, list pembayaran, update status bukti bayar. |
+| **Payments** | `/payments`, `/payments/{id}`, `/payment`, `/payment/{id}`, `/api/payments`, `/{id}` | GET, POST, PUT, DELETE | **Selesai 100%**: Input pembayaran, upload bukti bayar, validasi rental ID, filter (`?rental_id=`, `?status=`), dan otomatis mengonfirmasi status sewa (`rental_status = 'confirmed'`) saat pembayaran disetujui admin. |
 
 ---
 

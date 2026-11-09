@@ -209,10 +209,10 @@ Semua endpoint dengan tanda 🔒 mewajibkan header:
 | `POST` | `/rental` | 🔒 | Membuat transaksi rental baru (anti double-booking & auto kalkulasi biaya sewa, mengunci unit fisik ke `rented`) |
 | `PUT` | `/rental/{id}` | 🔒 | Memperbarui transaksi: input `actual_return_date` otomatis menghitung `late_fee` jika terlambat, dan OTOMATIS merestore status unit fisik kembali ke `available` |
 | `DELETE` | `/rental/{id}` | 🔒 | Membatalkan/menghapus transaksi rental dan memulihkan status unit menjadi `available` |
-| `GET` | `/payments` | 🔒 | Mengambil daftar transaksi pembayaran |
-| `POST` | `/payments` | 🔒 | Mencatat pembayaran baru |
-| `PUT` | `/payments/{id}` | 🔒 | Memperbarui status pembayaran & bukti transfer |
-| `DELETE` | `/payments/{id}` | 🔒 | Menghapus data pembayaran |
+| `GET` | `/payments` / `/payments/{id}` | 🔒 | Mengambil daftar pembayaran (filter `?rental_id=1`, `?status=pending`) atau detail 1 pembayaran |
+| `POST` | `/payments` | 🔒 | Mencatat pembayaran baru pelanggan (status default `pending`) |
+| `PUT` | `/payments/{id}` | 🔒 | Memperbarui/memvalidasi pembayaran (saat status `completed`, pesanan rental otomatis disetujui / `confirmed`) |
+| `DELETE` | `/payments/{id}` | 🔒 | Menghapus catatan pembayaran |
 
 ---
 

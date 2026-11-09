@@ -9,15 +9,15 @@
 ## 1. 📈 Ringkasan Eksekutif (Progress Scorecard)
 
 ```
-[██████████████████░░] 90% Total Penyelesaian
+[███████████████████░] 95% Total Penyelesaian
 - Modul Otentikasi & Pengguna : 85% (Selesai, perlu RBAC)
 - Modul Kategori              : 100% (SELESAI & DIPERBAIKI: Skema & Query Terstandardisasi, Handler Lengkap)
 - Modul Produk                : 100% (SELESAI & DIPERBAIKI: Akses Publik Terbuka, Search & Filter, Detail Unit Fisik, Kompatibilitas PK)
 - Modul Unit Fisik (Instances): 100% (SELESAI & DIPERBAIKI: Validasi Asset Code Unik, Filter Product & Status, Proteksi Unit Rented, Kompatibilitas ID Unit)
 - Modul Rental / Peminjaman   : 100% (SELESAI & DIPERBAIKI: Proteksi Anti Double Booking, Auto Durasi x Tarif, Reset Status Unit ke Available)
 - Modul Pengembalian & Denda  : 100% (SELESAI & DIPERBAIKI: Auto Calculation Late Fee Keterlambatan Pengembalian)
-- Modul Pembayaran            : 70% (Perlu integrasi status rental)
-- Laporan & Rekapitulasi      : 0%  (Belum dibuat)
+- Modul Pembayaran            : 100% (SELESAI & DIPERBAIKI: Auto-Confirm Rental Status saat Pembayaran Diverifikasi, Filter Rental & Status)
+- Laporan & Rekapitulasi      : 0%  (Fitur Berikutnya)
 ```
 
 ---
@@ -32,7 +32,7 @@
 | **4. Unit Fisik (Item Instances)** | CRUD Unit Fisik Lengkap, Get By ID, Validasi `asset_code` Unik, Validasi Keberadaan Produk, Filter `?product_id=`, `?status=`, `?search=`, Proteksi Hapus Unit Status `rented`, Kompatibilitas `id_unit` (ERD). | Sudah Selesai 100% | ~~Filter Ketersediaan & Sinkronisasi ID~~ **(SUDAH DIPERBAIKI)**: Ditambahkan filter komprehensif, proteksi integritas transaksi sewa, dan penggabungan nama produk (`product_name`). | 🟢 Selesai (100%) |
 | **5. Transaksi Rental** | Buat Sewa (`CreateRental`), Get All Rentals, Get By ID, Filter `?status=pending` (Pesanan Masuk) & `?user_id=`, Validasi Anti-Double Booking (FOR UPDATE), Auto Kalkulasi Durasi Sewa x Harga Harian. | Sudah Selesai 100% | ~~Risiko Double-Booking & Sinkronisasi Unit~~ **(SUDAH DIPERBAIKI)**: Unit fisik divalidasi ketersediaannya sebelum sewa, dikunci secara atomik dengan database transaction. | 🟢 Selesai (100%) |
 | **6. Pengembalian & Denda** | Catat Pengembalian Barang (`actual_return_date`), Auto Kalkulasi Denda Keterlambatan (`late_fee`), Otomatis Kembalikan Status Unit Fisik menjadi `available`. | Sudah Selesai 100% | ~~Stok Unit Terkunci Permanen & Input Denda Manual~~ **(SUDAH DIPERBAIKI)**: Unit otomatis kembali ke `available` saat rental selesai/dikembalikan, denda otomatis dihitung per hari keterlambatan. | 🟢 Selesai (100%) |
-| **7. Pembayaran** | Pencatatan pembayaran, format tanggal, update status pembayaran | Verifikasi pembayaran otomatis memperbarui `rental_status` | Nama tabel menggunakan `payment` sedangkan di ERD adalah `payments`. Pembayaran berhasil tidak otomatis mengubah status rental menjadi `confirmed`/`active`. | 🟡 Sedang |
+| **7. Pembayaran** | Pencatatan Pembayaran Pelanggan, Upload Bukti Transfer, Get All, Get By ID, Filter `?rental_id=` & `?status=`, Verifikasi Admin Otomatis Mengubah Status Rental Menjadi `confirmed`. | Sudah Selesai 100% | ~~Integrasi Status Rental & Detail Pelanggan~~ **(SUDAH DIPERBAIKI)**: Saat admin memverifikasi pembayaran (`completed`), status rental otomatis menjadi `confirmed`, respon menyertakan nama penyewa & produk. | 🟢 Selesai (100%) |
 | **8. Rekap Penjualan (Laporan)** | - | Endpoint rekapitulasi omset, total sewa, total denda, grafik bulanan | Belum ada controller maupun route untuk use case "rekap penjualan" admin. | 🔴 Tinggi |
 
 ---
